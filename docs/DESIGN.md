@@ -251,3 +251,19 @@ Fall back to your own idea of the stock clouds when the result is NaN. No time a
 layers sit on the real weather, and during a warp the API applies the current drift angle. The drift's sign
 comes from reading KSA's quaternion convention and hasn't been checked in game. With stock clouds,
 the caller has to apply the stock drift itself.
+
+## Releasing
+
+Releases go out on GitHub (`ghost225/KSALiveClouds`), and Borea picks them up from there.
+1. Bump `<Version>` in `KSALiveClouds/KSALiveClouds.csproj`.
+2. Commit and push. The repo's local git identity is the release account's.
+3. Run `tools/package.sh`. It refuses a dirty tree or an unpushed `HEAD`, builds into a temp folder (not the
+   live `out/` install), and writes `dist/KSALiveClouds-v<version>.zip` with one `KSALiveClouds/` folder. It
+   prints the SHA-256.
+4. `gh release create v<version> dist/KSALiveClouds-v<version>.zip --target <sha> --notes-file …`
+   - Add `--prerelease` for a pre-release.
+   - The zip must be the only asset.
+   - Check that the release page's digest matches.
+5. The Borea listing is `docs/borea/KSALiveClouds.toml`, as submitted to `KSAModding/content-index` at
+   `listings/KSALiveClouds.toml`. Once it's merged, the index's watcher stamps each new GitHub release by
+   itself. Edit the listing only to change its text, images, compatibility or loader bounds.

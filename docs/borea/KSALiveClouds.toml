@@ -1,0 +1,66 @@
+spec_version = 1
+id = "KSALiveClouds"
+type = "mod"
+name = "KSA Live Clouds"
+authors = ["ghost225"]
+abstract = "Earth's clouds from today's real weather: NOAA satellite imagery, refreshed hourly with a smooth fade."
+description = '''
+Stock Earth has one painted cloud map that slowly slides around the planet. Live Clouds swaps it for today's weather from NOAA's hourly satellite image of the whole globe. If it's clear over the Cape today, it's clear over the Cape in the game.
+
+![Live cloud cover from the 2026-10-25 03:00 UTC satellite image](ksa-image:cloud-cover)
+
+This mod is written against the [StarMap loader](https://github.com/StarMapLoader/StarMap). **0.1.0 is a pre-release:** the cloud swap at launch has been seen working in game, while the hourly fade and the time-warp drift have so far only been tested outside the game.
+
+## What it does
+
+- **Real clouds at launch.** The mod downloads NOAA's newest Global Mosaic of Geostationary Satellite Imagery (the longwave infrared image, about 7 MB, no account or key) and rebuilds Earth's cloud maps from it in about 5 seconds while the game loads.
+- **Both cloud layers.** The volumetric clouds from 2 km up follow real cloud, and the cirrus at 11 km follows the coldest, highest cloud tops. Cirrus over clear ground no longer draws a low deck as well.
+- **Cloud types from the weather.** Smooth decks lean stratus; lumpy fields of cells and thunderstorms lean cumulus. In stock KSA this choice is random noise.
+- **Weather where it really is.** The cloud layers no longer slide around the planet.
+- **Hourly refresh.** While you play it checks for the next hourly image, and the clouds fade from the old weather to the new over 10 minutes.
+- **Time warp.** While you warp, the clouds drift at the stock wind speed; back at 1×, they ease back over the real weather within a few seconds.
+- **Poles and offline.** Past about 72° latitude, where the satellites don't reach, the stock clouds fill in. Offline, the mod uses the last image it downloaded (up to 72 hours old), then the stock clouds.
+
+Only Earth in the Sol system is changed; in other systems the mod stays idle and downloads nothing. No game files are modified. Settings are in `mods/KSALiveClouds/live_clouds.cfg`.
+
+## Known limits
+
+- Infrared can't see warm low cloud such as sea fog and marine stratus, so those mostly come out clear.
+- A new image fades in as a dissolve rather than clouds visibly moving, and each fade step can cause a brief hitch.
+- Developed and tested on Linux; Windows should work but hasn't been tried yet.
+
+Satellite data: NOAA/NESDIS GMGSI via the NOAA Open Data Dissemination program on AWS (public domain; not endorsed by NOAA). Bundled libraries: PureHDF and ZstdSharp (MIT).
+'''
+license = "MIT"
+tags = ["visual"]
+
+[releases]
+github = "ghost225/KSALiveClouds"
+
+[links]
+# REQUIRED before the pull request: the thread on forums.ahwoo.com (see docs/borea/forum-thread.md).
+forums = "https://forums.ahwoo.com/threads/REPLACE-WITH-YOUR-THREAD.0/"
+repository = "https://github.com/ghost225/KSALiveClouds"
+bugtracker = "https://github.com/ghost225/KSALiveClouds/issues"
+
+[compatibility]
+game_min = "2026.10.25.5707"
+
+[loader]
+id = "StarMap"
+min = "0.4.8"
+
+[images.icon]
+url = "https://raw.githubusercontent.com/ghost225/KSALiveClouds/714ddd63f43ec77661fe09b05904a67898b2aabd/images/listing/icon.png"
+sha256 = "4960a8eded7a6490f323b2daff4d6157630d76665951f3533ca93fe858c13510"
+width = 512
+height = 512
+size = 102469
+
+[[images.description]]
+id = "cloud-cover"
+url = "https://raw.githubusercontent.com/ghost225/KSALiveClouds/714ddd63f43ec77661fe09b05904a67898b2aabd/images/listing/cloud-cover-2026-10-25T03Z.jpg"
+sha256 = "76575409909fd8bd8c585c041448facd96696db6eb959f5d27c88ded04e88dd3"
+width = 2048
+height = 1024
+size = 711180
