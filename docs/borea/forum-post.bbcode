@@ -1,0 +1,59 @@
+[HEADING=2]KSA Live Clouds 0.1.0 (pre-release)[/HEADING]
+Earth's clouds in Kitten Space Agency, as they really are right now. A StarMap mod.
+
+Stock Earth has one painted cloud map that slowly slides around the planet, so the Cape is under cloud no matter what the sky is doing. KSA Live Clouds swaps it for today's weather from NOAA's hourly satellite image of the whole globe. If it's clear over the Cape today, it's clear over the Cape in the game.
+
+[IMG alt="Live cloud cover from the 2026-10-25 03:00 UTC satellite image"]https://raw.githubusercontent.com/ghost225/KSALiveClouds/714ddd63f43ec77661fe09b05904a67898b2aabd/images/listing/cloud-cover-2026-10-25T03Z.jpg[/IMG]
+
+No game files are modified. The mod points the game's Earth cloud textures at its own files while the game loads them.
+
+[HEADING=3]Features[/HEADING]
+[LIST]
+[*][B]Real clouds at launch.[/B] It downloads NOAA's newest geostationary infrared mosaic (about 7 MB, no account or key) and rebuilds Earth's cloud maps from it in about 5 seconds while the game loads.
+[*][B]Both cloud layers.[/B] The volumetric clouds from 2 km up follow real cloud, and the cirrus at 11 km follows the coldest, highest cloud tops. Cirrus over clear ground no longer draws a low deck as well.
+[*][B]Cloud types from the weather.[/B] Smooth decks lean stratus; lumpy fields of cells and thunderstorms lean cumulus. In stock KSA this choice is random noise.
+[*][B]Weather where it really is.[/B] The cloud layers no longer slide around the planet.
+[*][B]Hourly refresh.[/B] While you play it checks for the next hourly image, and the clouds fade from the old weather to the new over 10 minutes.
+[*][B]Time warp.[/B] While you warp, the clouds drift at the stock wind speed so the sky doesn't look frozen. Back at 1×, they ease back over the real weather within a few seconds.
+[*][B]Poles and offline.[/B] Past about 72° latitude, where the satellites don't reach, the stock clouds fill in. Offline, it uses the last image it downloaded (up to 72 hours old), then the stock clouds. If anything goes wrong you get the stock clouds and a line in the log.
+[/LIST]
+Only Earth in the Sol system is changed. In other systems the mod stays idle and downloads nothing. Settings are in [ICODE]mods/KSALiveClouds/live_clouds.cfg[/ICODE] (fade time, warp drift, offline behaviour, texture size and more).
+
+[HEADING=3]Status[/HEADING]
+[B]Heads-up:[/B] this mod was built with Claude (Anthropic's AI), with me directing, testing and reviewing. The full source is on GitHub, so you can check what you're installing.
+
+This is a [B]pre-release[/B]. The cloud swap at launch has been seen working in game. The hourly fade and the time-warp drift have so far only been tested outside the game. It was developed and tested on Linux; Windows should work but hasn't been tried. Reports are very welcome, here or as a GitHub issue, ideally with the [ICODE][KSALiveClouds][/ICODE] lines from the game log.
+
+[HEADING=3]Known limits[/HEADING]
+[LIST]
+[*]Infrared can't see warm low cloud such as sea fog and marine stratus, so those mostly come out clear. Cold clear ground at night can show as a thin haze.
+[*]A new image fades in as a dissolve rather than clouds visibly moving, and you may notice a brief hitch every 30 seconds during a fade ([ICODE]face_size = 2048[/ICODE] makes it smaller).
+[*]KSA's calendar isn't today's date. The clouds are today's, placed where they really are.
+[/LIST]
+
+[HEADING=3]Installation[/HEADING]
+Requires [URL='https://github.com/StarMapLoader/StarMap']StarMap[/URL] 0.4.8 or newer.
+[LIST=1]
+[*]Install StarMap and run the game once through it.
+[*]Extract the release zip into [ICODE]Documents/My Games/Kitten Space Agency/mods/[/ICODE], giving [ICODE]mods/KSALiveClouds/KSALiveClouds.dll[/ICODE].
+[*]Launch the game once and close it. KSA adds new mods to [ICODE]manifest.toml[/ICODE] disabled: set this mod's entry to [ICODE]enabled = true[/ICODE].
+[*]Launch through StarMap.
+[/LIST]
+To uninstall, delete [ICODE]mods/KSALiveClouds[/ICODE]. Its cache (about 60–90 MB) is in [ICODE]%LOCALAPPDATA%\KSALiveClouds[/ICODE] on Windows and [ICODE]~/.local/share/KSALiveClouds[/ICODE] on Linux.
+
+[B]Network use:[/B] the mod downloads only from NOAA's public bucket on Amazon S3 ([ICODE]noaa-gmgsi-pds[/ICODE]), at most once an hour. Nothing else is sent anywhere.
+
+[HEADING=3]Credits[/HEADING]
+[LIST]
+[*]Satellite data: NOAA/NESDIS [URL='https://registry.opendata.aws/noaa-gmgsi/']Global Mosaic of Geostationary Satellite Imagery (GMGSI)[/URL], via the NOAA Open Data Dissemination program on AWS. Public domain (US government work), downloaded at run time and not shipped with the mod. This mod is not endorsed by NOAA.
+[*]Bundled: [URL='https://github.com/Apollo3zehn/PureHDF']PureHDF[/URL] 2.2.0 by Apollo3zehn, MIT.
+[*]Bundled: [URL='https://github.com/oleg-st/ZstdSharp']ZstdSharp.Port[/URL] 0.8.8 by Oleg Stepanischev, MIT, a port of [URL='https://github.com/facebook/zstd']Zstandard[/URL] by Meta (BSD-3-Clause).
+[/LIST]
+Their license texts are in [ICODE]THIRD_PARTY_NOTICES.md[/ICODE] in the download.
+
+[B]Version:[/B] 0.1.0 (pre-release), built for KSA 2026.10.25.5707
+[B]License:[/B] MIT
+[B]Source:[/B] [URL='https://github.com/ghost225/KSALiveClouds']GitHub[/URL]
+[B]Download:[/B] [URL='https://github.com/ghost225/KSALiveClouds/releases']GitHub Releases[/URL] (Borea listing to follow)
+[B]Dependencies:[/B] [URL='https://github.com/StarMapLoader/StarMap']StarMap[/URL] 0.4.8+ (required)
+[B]Bug reports:[/B] [URL='https://github.com/ghost225/KSALiveClouds/issues']GitHub issues[/URL]

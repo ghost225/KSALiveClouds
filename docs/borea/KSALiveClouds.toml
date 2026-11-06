@@ -38,7 +38,7 @@ tags = ["visual"]
 github = "ghost225/KSALiveClouds"
 
 [links]
-# REQUIRED before the pull request: the thread on forums.ahwoo.com (see docs/borea/forum-thread.md).
+# REQUIRED before the pull request: the thread on forums.ahwoo.com (post text: docs/borea/forum-post.bbcode).
 forums = "https://forums.ahwoo.com/threads/REPLACE-WITH-YOUR-THREAD.0/"
 repository = "https://github.com/ghost225/KSALiveClouds"
 bugtracker = "https://github.com/ghost225/KSALiveClouds/issues"
