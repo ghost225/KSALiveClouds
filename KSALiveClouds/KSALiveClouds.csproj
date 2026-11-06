@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <!-- the release version: tools/package.sh checks the tag against it -->
+    <Version>0.1.0</Version>
+    <PlatformTarget>x64</PlatformTarget>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- PureHDF + ZstdSharp ship next to the mod dll -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <NoWarn>$(NoWarn);CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8625;CS0649;CS0414;CS0169</NoWarn>
+    <KsaDir Condition="'$(KsaDir)' == ''">$(HOME)/Games/KSA/current</KsaDir>
+    <ModOutDir>$(MSBuildThisFileDirectory)../out/KSALiveClouds/</ModOutDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Lib.Harmony" Version="2.4.2" />
+    <PackageReference Include="StarMap.API" Version="0.3.6" />
+    <PackageReference Include="PureHDF" Version="2.2.0" />
+    <PackageReference Include="ZstdSharp.Port" Version="0.8.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="KSA"><HintPath>$(KsaDir)/KSA.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Brutal.Numerics"><HintPath>$(KsaDir)/Brutal.Numerics.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Brutal.Logging"><HintPath>$(KsaDir)/Brutal.Logging.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Brutal.Strings"><HintPath>$(KsaDir)/Brutal.Strings.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Brutal.ImGui"><HintPath>$(KsaDir)/Brutal.ImGui.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Brutal.Glfw"><HintPath>$(KsaDir)/Brutal.Glfw.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Brutal.Vulkan"><HintPath>$(KsaDir)/Brutal.Vulkan.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Brutal.Vulkan.Abstractions"><HintPath>$(KsaDir)/Brutal.Vulkan.Abstractions.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Brutal.Vulkan.Vma"><HintPath>$(KsaDir)/Brutal.Vulkan.Vma.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Brutal.Core"><HintPath>$(KsaDir)/Brutal.Core.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Brutal.Memory"><HintPath>$(KsaDir)/Brutal.Memory.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Brutal.Render.Common"><HintPath>$(KsaDir)/Brutal.Render.Common.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Planet.Render.Core"><HintPath>$(KsaDir)/Planet.Render.Core.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="BepuPhysics"><HintPath>$(KsaDir)/BepuPhysics.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="BepuUtilities"><HintPath>$(KsaDir)/BepuUtilities.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="CommunityToolkit.HighPerformance"><HintPath>$(KsaDir)/CommunityToolkit.HighPerformance.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+
+
+  <!-- the CLI harness compiles these same files on its own -->
+  <ItemGroup>
+    <Compile Remove="../tools/**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="mod.toml"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+    <None Update="live_clouds.cfg"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+  </ItemGroup>
+
+  <!-- Copy the mod (dll + its two libraries + mod.toml + settings) into out/KSALiveClouds; installing into Borea is a separate step. -->
+  <Target Name="StageMod" AfterTargets="Build">
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll;$(OutputPath)PureHDF.dll;$(OutputPath)ZstdSharp.dll;mod.toml;live_clouds.cfg" DestinationFolder="$(ModOutDir)" />
+  </Target>
+
+</Project>
